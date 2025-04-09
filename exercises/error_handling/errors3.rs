@@ -7,28 +7,31 @@
 // Execute `rustlings hint errors3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::num::ParseIntError;
-
+// 在子函数中可以使用?简易解析Result 但是main函数不可以
 fn main() {
     let mut tokens = 100;
     let pretend_user_input = "8";
 
-    let cost = total_cost(pretend_user_input)?;
+    match total_cost(pretend_user_input){
+        Ok(cost) =>if cost > tokens {
+            println!("You can't afford that many!");
+        } else {
+            tokens -= cost;
+            println!("You now have {} tokens.", tokens);
+        },
 
-    if cost > tokens {
-        println!("You can't afford that many!");
-    } else {
-        tokens -= cost;
-        println!("You now have {} tokens.", tokens);
+        Err(e) => (),
     }
+
+    
 }
 
 pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
     let processing_fee = 1;
     let cost_per_item = 5;
     let qty = item_quantity.parse::<i32>()?;
-
+    
     Ok(qty * cost_per_item + processing_fee)
 }
